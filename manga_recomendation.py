@@ -192,7 +192,7 @@ def display_selected_manga(selected_manga_dict, manga_per_row=9):
 #***********************************************************************
 def display_recommendations(recommendations, width = 8):
     
-    st.write("display: ", len(recommendations))
+    st.write("Recomendation Count: ", len(recommendations))
 
     start = st.session_state.recommendation_page * 50
     end = start + 50
@@ -348,6 +348,21 @@ if "english_jp" not in st.session_state:
 #
 #***********************************************************************
 if filter_genres != st.session_state["filter_genres"]:
+
+
+    #removing manga from selected manga when filters change
+    if "selected_manga_dict" in st.session_state:
+
+        remove = []
+        for manga in st.session_state["selected_manga_dict"]:
+            for genre in st.session_state["manga_genres"][manga]:
+
+                if genre in filter_genres:
+                    remove.append(manga)
+
+        for manga in remove:
+            st.session_state["selected_manga_dict"].pop(manga)
+
 
     search_filter_parity = False
 
